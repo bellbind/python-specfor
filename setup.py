@@ -4,16 +4,20 @@
 It is inspired from Ruby's RSpec. 
 Spec definition is based on Python decorator description.
 
-Features:
+Features
+--------
 
 - Decorator based Spec definition
 - "Spec" definition is compatible with unittest.TestCase
 - Spec files can execute with unittest/nose
 - Markdown document generator from spec file
-- RSpec like Expectation (e.g. "the[xxx].should.be yyy") 
+- RSpec like Expectation (e.g. ``the[xxx].should.be yyy``) 
 - Decorator based Mock generator
 
-Spec Example:
+Spec Example
+------------
+
+::
 
     # spec_sum.py
     from specfor import the, spec
@@ -71,6 +75,7 @@ setup(
     author_email="bellbind@gmail.com",
     url="http://github.com/bellbind/python-specfor",
     license="http://www.gnu.org/copyleft/lesser.html",
+    keywords=["bdd", "testing", "unittest"],
     description=doclines[0],
     long_description="\n".join(doclines[2:]),
     classifiers=[ln for ln in classifiers.split("\n") if ln],

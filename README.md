@@ -5,7 +5,7 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
 - It is inspired from Ruby's RSpec. 
 - Spec definition is based on Python decorator description.
 
-## Features:
+## Features
 
 - Decorator based Spec definition
 - "Spec" definition is compatible with unittest.TestCase
@@ -14,7 +14,7 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
 - RSpec like Expectation (e.g. "the[xxx].should.be yyy") 
 - Decorator based Mock generator
 
-## Spec Example:
+## Spec Example
 
     # spec_sum.py
     from specfor import the, spec
@@ -40,3 +40,7 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
     
     spec.publish(globals())
 
+## Resources
+
+- [PyPI python-specfor](http://pypi.python.org/pypi/python-specfor)
+- [RSpec](http://rspec.info/)
