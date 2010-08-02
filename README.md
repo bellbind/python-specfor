@@ -40,6 +40,10 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
     
     spec.publish(globals())
 
+For more examples, see: 
+[examples/*.py](http://github.com/bellbind/python-specfor/tree/master/examples/)
+
+
 ## Resources
 
 - [PyPI python-specfor](http://pypi.python.org/pypi/python-specfor)

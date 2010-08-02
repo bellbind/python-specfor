@@ -1,5 +1,4 @@
 # [design] separation of behavior and type
-# not yet implemented
 from specfor import the, spec
 
 # behaviors
