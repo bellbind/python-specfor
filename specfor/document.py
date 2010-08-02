@@ -20,6 +20,10 @@ class SimpleMarkdown(object):
             behavior = getattr(spec_class, name)
             lines.extend(self.convert_behavior(spec_class, behavior))
             pass
+        for bundlebehavior in spec_class.bundlebehaviors:
+            ls = self.convert_bundlebehavior(spec_class, bundlebehavior)
+            lines.extend(ls)
+            pass
         return [header] + lines + ["\n"]
     
     def convert_behavior(self, spec_class, behavior):
@@ -30,6 +34,29 @@ class SimpleMarkdown(object):
             lines.extend(self.convert_func(prepare))
             pass
         lines.extend(self.convert_func(behavior.definition))
+        for cleanup in spec_class.cleanups:
+            lines.extend(self.convert_func(cleanup))
+            pass
+        return [header] + lines + ["\n"]
+    
+    def convert_bundlebehavior(self, spec_class, bundlebehavior):
+        behavior = bundlebehavior.behavior
+        bundle = bundlebehavior.bundle
+        setup = bundlebehavior.setup
+        header = "### [%s] %s: %s\n\n" % (
+            spec_class.__name__, bundle.__name__, behavior.description)
+        lines = []
+        for prepare in spec_class.prepares:
+            lines.extend(self.convert_func(prepare))
+            pass
+        if setup: lines.extend(self.convert_func(setup))
+        for prepare in bundle.prepares:
+            lines.extend(self.convert_func(prepare))
+            pass
+        lines.extend(self.convert_func(behavior.definition))
+        for cleanup in bundle.cleanups:
+            lines.extend(self.convert_func(cleanup))
+            pass
         for cleanup in spec_class.cleanups:
             lines.extend(self.convert_func(cleanup))
             pass

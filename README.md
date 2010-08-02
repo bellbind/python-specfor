@@ -7,11 +7,11 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
 
 ## Features
 
-- Decorator based Spec definition
+- Python decorator based Spec definition
 - "Spec" definition is compatible with unittest.TestCase
-- Spec files can execute with unittest/nose
+- Spec files can execute with unittest or nose
 - Markdown document generator from spec file
-- RSpec like Expectation (e.g. "the[xxx].should.be yyy") 
+- RSpec like Expectation (e.g. `the[xxx].should.be[yyy]`) 
 - Decorator based Mock generator
 
 ## Spec Example

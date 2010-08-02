@@ -3,23 +3,23 @@
 from specfor import the, spec
 
 # behaviors
-seq_spec = spec.bevhaviors_of("sequence")
+seq_spec = spec.behaviors_of("sequence")
 @seq_spec.that("sum")
 def behavior(its):
     result = sum(its.target)
-    this[result].should == its.expected_sum
+    the[result].should == its.expected_sum
     pass
 @seq_spec.that("any")
 def behavior(its):
     result = any(its.target)
-    this[result].should == its.expected_any
+    the[result].should == its.expected_any
     pass
 
 
 list_spec = spec.behaviors_of("list")
 @list_spec.that("append/pop")
 def behavior(its):
-    its.target.push(its.item)
+    its.target.append(its.item)
     result = its.target.pop()
     the[result].should == its.item
     pass
