@@ -8,7 +8,7 @@ Features
 --------
 
 - Python decorator based Spec definition
-- "Spec" definition is compatible with unittest.TestCase
+- "Spec" definition is compatible with ``unittest.TestCase``
 - Spec files can execute with unittest/nose
 - Markdown document generator from spec file
 - RSpec like Expectation (e.g. ``the[xxx].should.be[yyy]``) 
