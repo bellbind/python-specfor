@@ -7,7 +7,7 @@ Spec definition is based on Python decorator description.
 Features
 --------
 
-- Decorator based Spec definition
+- Python decorator based Spec definition
 - "Spec" definition is compatible with unittest.TestCase
 - Spec files can execute with unittest/nose
 - Markdown document generator from spec file
