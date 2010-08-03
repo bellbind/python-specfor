@@ -1,33 +1,34 @@
 import re
-from specfor import mock
+from specfor.mockings import mock
 
-# [pythonic mock design] 
+# [decorator based mock design] 
+# not yet implemented
 mockhttp = mock.define("mockhttp")
 
 method = mockhttp.method("request")
-@mock.called.at(1)
-@method.just(uri="http://example.com", method="GET")
+@method.define(at=1, just=dict(uri="http://example.com", method="GET"))
 def request(state, uri, method):
     return 200
 
-@mock.called.until(4)
-@method.like(uri=str, method=re.compile(r'GET|PUT|POST|DELETE'))
+@method.define(
+    until=4, like=dict(uri=str, method=re.compile(r'GET|PUT|POST|DELETE')))
 def request(state, uri, method):
     return 201
 
-@mock.called.between(2, 3)
-@method.like(uri="http://example.com/foo", 
-             method=re.compile(r'GET|PUT|POST|DELETE'))
+@method.define(
+    between=(2,3),
+    like=dict(uri="http://example.com/foo", 
+              method=re.compile(r'GET|PUT|POST|DELETE')))
 def request(state, uri, method):
     return 404
 
 
-method = mockhttp.property("uri")
-@method.get.always
+prop = mockhttp.property("uri")
+@prop.get.always
 def uri(state):
     return "http://localhost"
 
-@method.set.unless(val="http://localhost")
+@prop.set.define(unless=dict(val="http://localhost"))
 def uri(state, val):
     raise ValueError("invalid")
 
