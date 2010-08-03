@@ -3,16 +3,6 @@ import functools
 
 from . import match
 
-class MatchActions(object):
-    def __init__(self, expectation):
-        self.expectation = expectation
-        pass
-    pass
-
-for name, func in match.match_actions:
-    setattr(MatchActions, name, func)
-    pass
-
 
 class ValueExpectation(object):
     def __init__(self, lazy):
@@ -35,7 +25,7 @@ class ValueExpectation(object):
         return self.lazy()
     @property
     def should(self):
-        return MatchActions(self)
+        return match.MatchActions(self)
     def applying(self, func):
         lazy = functools.wraps(func)(lambda: func(self.value))
         return ValueExpectation(lazy)

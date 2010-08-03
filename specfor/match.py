@@ -1,9 +1,15 @@
 import difflib
 import functools
 
-match_actions = []
+class MatchActions(object):
+    def __init__(self, expectation):
+        self.expectation = expectation
+        pass
+    pass
+
+
 def register(name, match_func):
-    match_actions.append((name, match_func))
+    setattr(MatchActions, name, match_func)
     pass
 
 # expectation actions
