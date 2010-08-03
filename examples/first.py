@@ -2,7 +2,7 @@
 # run nose: nosetest examples/first.py
 # generate md doc: python -m specfor.document examples.first
 
-from specfor import the, spec, expected
+from specfor import the, spec
 
 empty = spec.of("Empty List")
 @empty.before()
@@ -14,23 +14,29 @@ def prepare(its):
 def behavior(its):
     the[its.value].should.exist
     the[len(its.value)].should.be[0]
-    the[its.value](len).should == 0
+    the[its.value].applying(len).should == 0
     pass
 
 @empty.that("length should not be 1")
 def behavior(its):
     result = its.value
-    
     with the[result] as it:
-        it(len).should.be_in([0, 1, 2])
+        it.applying(len).should.be_in([0, 1, 2])
         it.count("a").should == 0
         the[len(it.value)].should == 0
         pass
     pass
 
+@empty.that("length should not be 1")
+def behavior(its):
+    the[its.value].applying(repr).should == "[]"
+    pass
+
 @empty.that("cannot pop")
 def behavior(its):
-    with expected[IndexError]: its.value.pop()
+    with the.raising[IndexError]: 
+        its.value.pop()
+        pass
     pass
 
 # multiple inputs
