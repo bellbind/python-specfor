@@ -46,35 +46,84 @@ class MockMethod(object):
         pass
     pass
 
-class Responsibility(object):
-    def __init__(self, method, argspecs, result, calls):
-        self.method = method
-        self.argspecs = argspecs
-        self.result = result
-        self.calls = calls
+class Restriction(object):
+    name = "nop"
+    def __repr__(self):
+        return "[]"
+    def precalled(self, responsibilities, *args, **kwargs):
+        """called before method calling
+        """
+        return True
+    def postcalled(self, responsibilities, returns, *args, **kwargs):
+        """called after method calling
+        """
+        return True
+    def completed(self, responsibilities):
+        """called when mock completed check
+        raise AssertError if restriction does not completed
+        """
+        return
+    pass
+
+class ArgsRestiction(Restriction):
+    name = "args"
+    def __init__(self, argspec):
+        self.argspec = argspec
+        pass
+    def prepare(self, responsibilities, args, kwargs):
+        return self.argspec.accept(args, kwargs)
+    def called(self, responsibilities, returns, args, kwargs):
+        return True
+    def completed(self, responsibilities):
+        return
+    def __repr__(self):
+        return "(%s)" % (repr(self.argspec))
+    pass
+
+class CallRestiction(Restriction):
+    name = "call"
+    def __init__(self, callspec):
+        self.callspec = callspec
         self.count = 0
+        pass
+    def prepare(self, responsibilities, args, kwargs):
+        return not self.callspec.finished(self.count)
+    def called(self, responsibilities, returns, args, kwargs):
+        self.count += 1
+        return True
+    def completed(self, responsibilities):
+        assert self.callspec.completed(self.count), (
+            "presonsibility not completed: %s" % repr(responsibilities))
+    def __repr__(self):
+        return "[%s|%s]" % (self.count, repr(self.callspec))
+    pass
+
+class Responsibility(object):
+    def __init__(self, method, result):
+        self.method = method
+        self.result = result
+        self.restrictions = []
         method.responsibilities.append(self)
         pass
     def responds(self, *args, **kwargs):
-        if self.finished(): return False
-        return self.argspecs.accept(args, kwargs)
+        for restrictions in self.restrictions:
+            if not restrictions.prepare(self, args, kwargs): return False
+            pass
+        return True
     def returns(self, *args, **kwargs):
         ret = self.result(*args, **kwargs)
-        self.count += 1
+        for restrictions in self.restrictions:
+            if not restrictions.called(self, ret, args, kwargs): return False
+            pass
         return ret
-    def completed(self):
-        return self.calls.completed(self.count)
-    def finished(self):
-        return self.calls.finished(self.count)
     def check_complete(self):
-        if self.completed(): return
-        assert False, "presonsibility not completed: %s" % repr(self)
+        for restrictions in self.restrictions:
+            restrictions.completed(self)
+            pass
+        return
     def __repr__(self):
-        return "%s(%s)[%s|%s]" % (
-            repr(self.method),
-            repr(self.argspecs),
-            self.count,
-            repr(self.calls))
+        return repr(self.method) + "".join(
+            repr(rest) for rest in self.restrictions)
     pass
 
 
@@ -387,7 +436,11 @@ class MockCreator(object):
     
     def create_responsibility(self, method, respdef):
         argspecs = ArgSpecs(respdef.kwargspecs, respdef.funcspec)
-        return Responsibility(method, argspecs, respdef.result, respdef.called)
+        resp = Responsibility(method, respdef.result)
+        resp.restrictions.append(ArgsRestiction(argspecs))
+        resp.restrictions.append(CallRestiction(respdef.called))
+        return resp
+    
     def create_property(self, pdef):
         getter = self.create_mockmethod(pdef.get)
         setter = self.create_mockmethod(pdef.set)
