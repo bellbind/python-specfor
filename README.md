@@ -14,9 +14,13 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
 - RSpec like Expectation (e.g. `the[xxx].should.be[yyy]`) 
 - Decorator based Mock generator
 
+## Install
+
+    easy_install python-specfor
+
 ## Spec Example
 
-    # spec_sum.py
+    # examples/sum_spec.py
     from specfor import the, spec
     
     empty_list = spec.of("empty list")
@@ -43,6 +47,24 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
 For more examples, see: 
 [examples/*.py](http://github.com/bellbind/python-specfor/tree/master/examples/)
 
+## Usage
+
+"Spec" code is completely `unittest` code.
+It cound run by `unittest` various runners:
+
+    python -m examples.sum_spec
+
+At Python 2.7, "Spec" can run by "-m unittest" runner command:
+
+    python2.7 -m unittest examples.sum_spec.empty_list
+
+It is also compatible with "nose". so it can run by "nosetest":
+
+    nosetest examples/sum_spec.py
+
+## License
+
+[GNU Lesser General Public License](http://www.gnu.org/copyleft/lesser.html)
 
 ## Resources
 
