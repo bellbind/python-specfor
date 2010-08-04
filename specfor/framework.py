@@ -37,7 +37,7 @@ class AddCleanUp(object):
         pass
     def __call__(self):
         def decorator(cleanup):
-            self.spec_type.cleanuos.append(cleanup)
+            self.spec_type.cleanups.append(cleanup)
             return cleanup
         return decorator
     pass
