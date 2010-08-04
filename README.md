@@ -12,7 +12,7 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
 - Spec files can execute with `unittest` or `nosetests`
 - RSpec like Expectation (e.g. `the[xxx].should.be[yyy]`) 
 - Decorator based "Mock" object definition
-- All features can be used independently: e.g. use spec with nose.tools
+- All features can be used independently: e.g. use spec with `nose.tools`
 - Markdown document generator from spec file
 
 ## Install
