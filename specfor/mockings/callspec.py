@@ -7,7 +7,8 @@ class CallRestiction(plugins.Restriction):
         self.count = 0
         pass
     def prepare(self, responsibilities, args, kwargs):
-        return not self.callspec.finished(self.count)
+        #return not self.callspec.finished(self.count)
+        return True
     def called(self, responsibilities, returns, args, kwargs):
         self.count += 1
         return True
@@ -39,7 +40,7 @@ class CalledSpecAny(CalledSpec):
     def __repr__(self):
         return "*"
     pass
-#plugins.register("any", lambda _: CallRestiction(CalledSpecAny())
+plugins.register("anytimes", lambda _: CallRestiction(CalledSpecAny()))
 
 class CalledSpecJust(CalledSpec):
     def __init__(self, count):
@@ -50,10 +51,12 @@ class CalledSpecJust(CalledSpec):
     def finished(self, count):
         return self.count == count
     def __repr__(self):
-        return "%s" % self.count
+        return "==%s" % self.count
     pass
 plugins.register(
     "at", lambda resp, count: CallRestiction(CalledSpecJust(count)))
+plugins.register(
+    "exactly", lambda resp, count: CallRestiction(CalledSpecJust(count)))
 
 class CalledSpecUntil(CalledSpec):
     def __init__(self, count):
@@ -68,6 +71,24 @@ class CalledSpecUntil(CalledSpec):
     pass
 plugins.register(
     "until", lambda resp, count: CallRestiction(CalledSpecUntil(count)))
+plugins.register(
+    "atmost", lambda resp, count: CallRestiction(CalledSpecUntil(count)))
+
+class CalledSpecOver(CalledSpec):
+    def __init__(self, count):
+        self.count = count
+        pass
+    def completed(self, count):
+        return self.count <= count
+    def finished(self, count):
+        return False
+    def __repr__(self):
+        return ">=%s" % self.count
+    pass
+plugins.register(
+    "over", lambda resp, count: CallRestiction(CalledSpecOver(count)))
+plugins.register(
+    "atleast", lambda resp, count: CallRestiction(CalledSpecOver(count)))
 
 class CalledSpecBetween(CalledSpec):
     def __init__(self, mini, maxi):

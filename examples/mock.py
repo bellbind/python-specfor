@@ -11,14 +11,14 @@ def request(state, uri, method):
     return 200
 
 @method.define(
-    until=4, like=dict(uri=str, method=re.compile(r'GET|PUT|POST|DELETE')))
+    until=4, like=dict(uri=str, method=re.compile(r'PUT')))
 def request(state, uri, method):
     return 201
 
 @method.define(
     between=(2,3),
     like=dict(uri="http://example.com/foo", 
-              method=re.compile(r'GET|PUT|POST|DELETE')))
+              method=lambda m:m == "GET"))
 def request(state, uri, method):
     return 404
 
@@ -53,7 +53,7 @@ except AssertionError:
     pass
 print(http.request("http://example.com", "GET"))
 for i in range(4):
-    print(http.request("http://example.com/foo", "GET"))
+    print(http.request("http://example.com/foo", "PUT"))
     pass
 for i in range(2):
     print(http.request("http://example.com/foo", "GET"))
