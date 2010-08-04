@@ -7,19 +7,21 @@ Spec definition is based on Python decorator description.
 Features
 --------
 
-- Python decorator based Spec definition
+- Python decorator based "Spec" definition
 - "Spec" definition is compatible with ``unittest.TestCase``
-- Spec files can execute with unittest/nose
+- Spec files can execute with ``unittest`` or ``nosetests``
+- RSpec like Expectation (e.g. ``the[xxx].should.be[yyy]``)
+- Decorator based "Mock" object definition
+- All features can be used independently: e.g. use spec with ``nose.tools``
 - Markdown document generator from spec file
-- RSpec like Expectation (e.g. ``the[xxx].should.be[yyy]``) 
-- Decorator based Mock generator
+
 
 Spec Example
 ------------
 
 ::
 
-    # spec_sum.py
+    # examples/sum_spec.py
     from specfor import the, spec
     
     empty_list = spec.of("empty list")
@@ -68,7 +70,7 @@ except:
 
 setup(
     name="python-specfor",
-    version="0.0.3",
+    version="0.0.4",
     packages=["specfor", "specfor.mockings"],
     
     author="bellbind",

@@ -9,14 +9,17 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
 
 - Python decorator based Spec definition
 - "Spec" definition is compatible with `unittest.TestCase`
-- Spec files can execute with unittest or nose
-- Markdown document generator from spec file
+- Spec files can execute with `unittest` or `nosetests`
 - RSpec like Expectation (e.g. `the[xxx].should.be[yyy]`) 
-- Decorator based Mock generator
+- Decorator based "Mock" object definition
+- All features can be used independently: e.g. use spec with nose.tools
+- Markdown document generator from spec file
 
 ## Install
 
-    easy_install python-specfor
+For install/update, use `easy_install` command:
+
+    easy_install -U python-specfor
 
 ## Spec Example
 
@@ -54,13 +57,13 @@ It cound run by `unittest` various runners:
 
     python -m examples.sum_spec
 
-At Python 2.7, "Spec" can run by "-m unittest" runner command:
+At Python 2.7, "Spec" can run by `python -m unittest` runner command:
 
     python2.7 -m unittest examples.sum_spec.empty_list
 
-It is also compatible with "nose". so it can run by "nosetest":
+It is also compatible with "nose". so it can run by `nosetests`:
 
-    nosetest examples/sum_spec.py
+    nosetests examples/sum_spec.py
 
 ## License
 
@@ -70,3 +73,4 @@ It is also compatible with "nose". so it can run by "nosetest":
 
 - [PyPI python-specfor](http://pypi.python.org/pypi/python-specfor)
 - [RSpec](http://rspec.info/)
+- [nose](http://somethingaboutorange.com/mrl/projects/nose/)
