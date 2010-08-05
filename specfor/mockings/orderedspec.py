@@ -5,7 +5,7 @@ class OrderedRestriction(plugins.Restriction):
     def __init__(self, context):
         self.context = context
         self.passed = False
-        order_list.append(self)
+        self.context.append(self)
         pass
     def called(self, responsibilities, returns, args, kwargs):
         for rest in self.context:
