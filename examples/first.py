@@ -1,6 +1,6 @@
 # run test: python -m examples.first
 # run nose: nosetest examples/first.py
-# generate md doc: python -m specfor.document examples.first
+# generate md doc: python -m specfor.doc examples.first
 
 from specfor import the, spec
 
