@@ -1,5 +1,6 @@
 import itertools
 from . import plugins
+from . import nil as nilmodule
 
 # mock
 
@@ -192,4 +193,5 @@ class MockEngine(object):
     def define(self, name):
         return MockDef(name)
     check = MockChecker()
+    nil = nilmodule.nil
     pass
