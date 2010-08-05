@@ -35,8 +35,18 @@ def behavior(its):
     r = run_as_tests(fail_spec)
     assert not r.wasSuccessful()
     pass
-
+@spec_for_match_plugin.that("add new verb")
+def cleanup(its):
+    import sys
+    if "specfor.match" in sys.modules: 
+        del sys.modules["specfor.match"]
+        pass
+    if "specfor.expectation" in sys.modules: 
+        del sys.modules["specfor.expectation"]
+        pass
     pass
+
+
 
 def run_as_tests(spec, r=None):
     import unittest
