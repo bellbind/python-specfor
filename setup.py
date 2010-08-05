@@ -70,7 +70,7 @@ except:
 
 setup(
     name="python-specfor",
-    version="0.0.4",
+    version="0.0.5",
     packages=["specfor", "specfor.mockings"],
     
     author="bellbind",
