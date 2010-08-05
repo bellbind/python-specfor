@@ -15,6 +15,7 @@ class CallRestiction(plugins.Restriction):
     def completed(self, responsibilities):
         assert self.callspec.completed(self.count), (
             "presonsibility not completed: %s" % repr(responsibilities))
+        pass
     def __repr__(self):
         return "[%s|%s]" % (self.count, repr(self.callspec))
     pass
