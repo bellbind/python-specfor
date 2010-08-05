@@ -2,7 +2,7 @@ from specfor import spec
 
 
 spec_for_spec = spec.of("spec for specfor.spec")
-@spec_for_spec.that("with behavior")
+@spec_for_spec.that("successful behavior")
 def behavior(its):
     log = []
     a_spec = spec.of("a spec")
@@ -17,7 +17,7 @@ def behavior(its):
     pass
 
 
-@spec_for_spec.that("with failed behavior")
+@spec_for_spec.that("failure behavior")
 def behavior(its):
     a_spec = spec.of("a spec")
     @a_spec.that("raise AssertionError")
@@ -70,6 +70,26 @@ def behavior(its):
     assert len(log) == 2
     assert log[0] == "behavior"
     assert log[1] == "after"
+    pass
+
+@spec_for_spec.that("failure behavior with after processing: after could run")
+def behavior(its):
+    log = []
+    a_spec = spec.of("a spec")
+    @a_spec.that("check done")
+    def behavior(it):
+        assert False
+        log.append("behavior")
+        pass
+    @a_spec.after()
+    def cleanup(it):
+        log.append("after")
+        pass
+    
+    # check as unittest.TestCase
+    test, r = run_as_test(a_spec)
+    assert len(log) == 1
+    assert log[0] == "after"
     pass
 
 
@@ -191,7 +211,6 @@ def behavior(its):
     assert log[4] == "bundle after"
     assert log[5] == "spec after"
     pass
-
 
 
 def run_as_test(spec, r=None):

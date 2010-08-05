@@ -2,18 +2,19 @@ import functools
 import unittest
 
 class Bundle(object):
-    def setUp(self):
-        for prepare in self.prepares:
-            prepare(self)
+    def setUp(its):
+        for prepare in its.prepares:
+            prepare(its)
             pass
         pass
-    def tearDown(self):
-        for cleanup in self.cleanups:
-            cleanup(self)
+    def tearDown(its):
+        for cleanup in its.cleanups:
+            cleanup(its)
             pass
         pass
     pass
 class Spec(Bundle, unittest.TestCase):
+    
     pass
 
 # spec TestCase creator
