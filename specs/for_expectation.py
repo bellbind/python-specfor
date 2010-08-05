@@ -22,11 +22,8 @@ def behavior(its):
         pass
     
     
-    r = run_as_tests(success_spec)
-    assert r.wasSuccessful()
-    # r.failures is [(test_instance, traceback_text), ...]
-    r = run_as_tests(fail_spec)
-    assert not r.wasSuccessful()
+    assert spec.run(success_spec).wasSuccessful()
+    assert not spec.run(fail_spec).wasSuccessful()
     pass
 
 
@@ -54,10 +51,8 @@ def behavior(its):
         the["a" + "b"].should == "abc"
         pass
     
-    r = run_as_tests(success_spec)
-    assert r.wasSuccessful()
-    r = run_as_tests(fail_spec)
-    assert len(r.failures) == 2
+    assert spec.run(success_spec).wasSuccessful()
+    assert len(spec.run(fail_spec).failures) == 2
     pass
 
 
@@ -85,10 +80,8 @@ def behavior(its):
         the["a" + "b"].should != "ab"
         pass
     
-    r = run_as_tests(success_spec)
-    assert r.wasSuccessful()
-    r = run_as_tests(fail_spec)
-    assert len(r.failures) == 2
+    assert spec.run(success_spec).wasSuccessful()
+    assert len(spec.run(fail_spec).failures) == 2
     pass
 
 @spec_for_expect.that("for instance")
@@ -107,20 +100,8 @@ def behavior(its):
         the[{}].should.be_instance_of[list]
         pass
     
-    r = run_as_tests(success_spec)
-    assert r.wasSuccessful()
-    r = run_as_tests(fail_spec)
-    assert not r.wasSuccessful()
+    assert spec.run(success_spec).wasSuccessful()
+    assert not spec.run(fail_spec).wasSuccessful()
     pass
-
-
-def run_as_tests(spec, r=None):
-    import unittest
-    r = r or unittest.TestResult()
-    for name in [n for n in dir(spec) if n.startswith("test")]:
-        test = spec(name)
-        test.run(r)
-        pass
-    return r
 
 spec.publish(globals())

@@ -160,6 +160,15 @@ class Engine(object):
         if globals_["__name__"] == "__main__": 
             return unittest.main()
         return
+    
+    def run(self, spec, result=None):
+        result = result or unittest.TestResult()
+        for name in [n for n in dir(spec) if n.startswith("test")]:
+            test = spec(name)
+            test.run(result)
+            pass
+        return result
+    
     of = MakeSpec()
     behaviors_of = MakeBundle()
     pass

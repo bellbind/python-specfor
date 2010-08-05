@@ -70,6 +70,15 @@ class MatchIn(MatchAction):
     pass
 register("be_in", property(lambda self: MatchIn(self.expectation)))
 
+class MatchNotIn(MatchAction):
+    def __call__(self, expected):
+        message = "it[%s] exists in %s"
+        assert self.expectation.value not in expected, message % (
+            self.expectation.value, expected)
+        pass
+    pass
+register("not_be_in", property(lambda self: MatchNotIn(self.expectation)))
+
 class MatchEach(MatchAction):
     def __call__(self, expected):
         value = list(sorted(self.expectation.value))
@@ -112,4 +121,5 @@ class MatchFalse(MatchAction):
         pass
     pass
 register("be_false", property(lambda self: MatchFalse(self.expectation)()))
+register("be_no", property(lambda self: MatchFalse(self.expectation)()))
 

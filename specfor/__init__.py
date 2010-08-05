@@ -1,21 +1,18 @@
-version = "0.0.1"
+version = "0.0.5"
 from .framework import *
 from .expectation import *
 from .mockings import *
 
-def refresh():
-    """refresh specfor module. returned module is cleanup all extra plugins
-    
-    usage:
-    
-        global specfor
-        specfor = specfor.refresh()
-    """
+def new_specfor():
     import sys
     names = [k for k in sys.modules if k.startswith("specfor")]
+    origs = {}
     for name in names:
+        origs[name] = sys.modules[name]
         del sys.modules[name]
         pass
-    return __import__("specfor")
+    new = __import__("specfor")
+    sys.modules.update(origs)
+    return new
 
 __all__ = ["the", "spec", "mock"]

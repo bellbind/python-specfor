@@ -212,7 +212,7 @@ def behavior(its):
     assert log[5] == "spec after"
     pass
 
-
+# helper
 def run_as_test(spec, r=None):
     import unittest
     r = r or unittest.TestResult()
