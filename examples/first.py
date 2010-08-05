@@ -2,44 +2,48 @@
 # run nose: nosetest examples/first.py
 # generate md doc: python -m specfor.doc examples.first
 
+# import
 from specfor import the, spec
 
+
+# [Ex1] describe a spec
 empty = spec.of("Empty List")
+# prepare sample data
 @empty.before()
 def prepare(its):
     its.value = []
     pass
 
+# define behavior
 @empty.that("length should be 0")
 def behavior(its):
-    the[its.value].should.exist
-    the[len(its.value)].should.be[0]
-    the[its.value].applying(len).should == 0
+    result = len(its.value)
+    # describe expectations for 
+    the[result].should.exist
+    the[result].should.be[0]
+    the[result].applying(str).should == "0"
     pass
 
 @empty.that("length should not be 1")
 def behavior(its):
     result = its.value
+    # other style of expectations
     with the[result] as it:
-        it.applying(len).should.be_in([0, 1, 2])
-        it.count("a").should == 0
-        the[len(it.value)].should == 0
+        it.should.exist
+        it.should.not_be[1]
+        it.applying(str).startswith("1").should.be_false
         pass
-    pass
-
-@empty.that("length should not be 1")
-def behavior(its):
-    the[its.value].applying(repr).should == "[]"
     pass
 
 @empty.that("cannot pop")
 def behavior(its):
+    # expect raising error
     with the.raising[IndexError]: 
         its.value.pop()
         pass
     pass
 
-# multiple inputs
+# [Ex2] describe behavior with multiple input patterns
 nonzeros = spec.of("non zero values")
 @nonzeros.before()
 def values(its):
@@ -54,6 +58,7 @@ def values(its):
     its.b = 0
     pass
 
+# specs share behavior 
 @nonzeros.that("sum is nonzero")
 @zeros.that("sum is zero")
 def spec_for_sum(its):
@@ -61,6 +66,7 @@ def spec_for_sum(its):
     the[result].should == its.sum
     pass
 
+# prepare lack data for the behavior
 @nonzeros.before()
 def sum_result(its):
     its.sum = 110
@@ -71,4 +77,5 @@ def sum_result(its):
     pass
 
 
+# [at last] it makes unittest execution
 spec.publish(globals())
