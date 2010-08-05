@@ -41,15 +41,24 @@ class MatchNot(MatchAction):
 register("__ne__", lambda self, expected: MatchNot(self.expectation)(expected))
 register("not_be", property(lambda self: MatchNot(self.expectation)))
 
-class MatchInstance(MatchAction):
-    def __call__(self, expected):
-        message = "it[%s] should be instance of %s"
-        assert isinstance(self.expectation.value, expected), message % (
-            repr(self.expectation.value), repr(expected))
+class MatchTrue(MatchAction):
+    def __call__(self):
+        message = "it should be True"
+        assert self.expectation.value, message
         pass
     pass
-register("be_instance_of", 
-         property(lambda self: MatchInstance(self.expectation)))
+register("be_true", property(lambda self: MatchTrue(self.expectation)()))
+register("be_ok", property(lambda self: MatchTrue(self.expectation)()))
+
+class MatchFalse(MatchAction):
+    def __call__(self):
+        message = "it should be False"
+        assert not self.expectation.value, message
+        pass
+    pass
+register("be_false", property(lambda self: MatchFalse(self.expectation)()))
+register("be_no", property(lambda self: MatchFalse(self.expectation)()))
+
 
 
 class MatchExist(MatchAction):
@@ -60,6 +69,15 @@ class MatchExist(MatchAction):
         pass
     pass
 register("exist", property(lambda self: MatchExist(self.expectation)()))
+
+class MatchNotExist(MatchAction):
+    def __call__(self):
+        message = "it[%s] exists"
+        assert self.expectation.value is None, message % (
+            self.expectation.value)
+        pass
+    pass
+register("not_exist", property(lambda self: MatchNotExist(self.expectation)()))
 
 class MatchIn(MatchAction):
     def __call__(self, expected):
@@ -79,7 +97,17 @@ class MatchNotIn(MatchAction):
     pass
 register("not_be_in", property(lambda self: MatchNotIn(self.expectation)))
 
-class MatchEach(MatchAction):
+class MatchInstance(MatchAction):
+    def __call__(self, expected):
+        message = "it[%s] should be instance of %s"
+        assert isinstance(self.expectation.value, expected), message % (
+            repr(self.expectation.value), repr(expected))
+        pass
+    pass
+register("be_instance_of", 
+         property(lambda self: MatchInstance(self.expectation)))
+
+class MatchSame(MatchAction):
     def __call__(self, expected):
         value = list(sorted(self.expectation.value))
         exp = list(sorted(expected))
@@ -97,29 +125,26 @@ class MatchEach(MatchAction):
             eindex = match.b + match.size
             pass
         
-        assert len(lefts) != 0 or len(not_founds) != 0, "".join(
+        assert not lefts and not not_founds, "".join(
             ["%s should not be in it" % lefts if lefts else "",
              ", and " if lefts and not_founds else "",
              "%s should be in it" % not_founds if not_founds else ""])
         pass
     pass
-register("be_each_of", property(lambda self: MatchEach(self.expectation)))
+register("be_same_as", property(lambda self: MatchSame(self.expectation)))
 
-class MatchTrue(MatchAction):
-    def __call__(self):
-        message = "it should be True"
-        assert self.expectation.value, message
+
+class MatchSameOrder(MatchAction):
+    def __call__(self, expected):
+        value = list(self.expectation.value)
+        exp = list(expected)
+        assert value == exp, "diff:\n%s" % (
+            "\n".join(difflib.ndiff(
+                    [repr(v) for v in value],
+                    [repr(v) for v in exp])))
         pass
     pass
-register("be_true", property(lambda self: MatchTrue(self.expectation)()))
-register("be_ok", property(lambda self: MatchTrue(self.expectation)()))
+register("be_same_order_as", 
+         property(lambda self: MatchSameOrder(self.expectation)))
 
-class MatchFalse(MatchAction):
-    def __call__(self):
-        message = "it should be False"
-        assert not self.expectation.value, message
-        pass
-    pass
-register("be_false", property(lambda self: MatchFalse(self.expectation)()))
-register("be_no", property(lambda self: MatchFalse(self.expectation)()))
 
