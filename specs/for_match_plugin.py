@@ -1,10 +1,10 @@
-from specfor import the, spec
+import specfor
 
-
-spec_for_match_plugin = spec.of("match plugin")
+spec_for_match_plugin = specfor.spec.of("match plugin")
 @spec_for_match_plugin.that("add new verb")
 def behavior(its):
     # define
+    
     from specfor.match import MatchAction, register
     
     class MatchNotInstance(MatchAction):
@@ -18,32 +18,33 @@ def behavior(its):
              property(lambda self: MatchNotInstance(self.expectation)))
     
     # use
-    success_spec = spec.of("not instance")
+    success_spec = specfor.spec.of("not instance")
     @success_spec.that("the[val].should.not_be_instance_of[exp_type]")
     def behavior(it):
-        the[{}].should.not_be_instance_of[list]
+        specfor.the[{}].should.not_be_instance_of[list]
         pass
     
-    fail_spec = spec.of("not instance")
+    fail_spec = specfor.spec.of("not instance")
     @fail_spec.that("the[val].should.not_be_instance_of[exp_type]")
     def behavior(it):
-        the[{}].should.not_be_instance_of[dict]
+        specfor.the[{}].should.not_be_instance_of[dict]
         pass
     
     r = run_as_tests(success_spec)
-    assert r.wasSuccessful()
+    specfor.the[r.wasSuccessful()].should.be_true
     r = run_as_tests(fail_spec)
-    assert not r.wasSuccessful()
+    specfor.the[r.wasSuccessful()].should.be_false
     pass
-@spec_for_match_plugin.that("add new verb")
+
+@spec_for_match_plugin.after()
 def cleanup(its):
-    import sys
-    if "specfor.match" in sys.modules: 
-        del sys.modules["specfor.match"]
-        pass
-    if "specfor.expectation" in sys.modules: 
-        del sys.modules["specfor.expectation"]
-        pass
+    global specfor
+    old = specfor
+    specfor = specfor.refresh()
+    specfor.the[id(specfor)].should != id(old)
+    
+    from specfor.match import MatchActions
+    assert "not_be_instance_of" not in dir(MatchActions)
     pass
 
 
@@ -56,5 +57,6 @@ def run_as_tests(spec, r=None):
         test.run(r)
         pass
     return r
-spec.publish(globals())
+
+specfor.spec.publish(globals())
 

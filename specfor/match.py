@@ -23,9 +23,9 @@ class MatchAction(object):
 
 class Match(MatchAction):
     def __call__(self, expected):
-        message = "it[%s] should be %s" % (
+        message = "it[%s] should be %s"
+        assert self.expectation.value == expected, message % (
             repr(self.expectation.value), repr(expected))
-        assert self.expectation.value == expected, message
         pass
     pass
 register("__eq__", lambda self, expected: Match(self.expectation)(expected))
@@ -33,8 +33,9 @@ register("be", property(lambda self: Match(self.expectation)))
 
 class MatchNot(MatchAction):
     def __call__(self, expected):
-        message = "it should not be %s" % (repr(self.expectation.value))
-        assert self.expectation.value != expected, message
+        message = "it[%s] should not be %s"
+        assert self.expectation.value != expected, message % (
+            repr(self.expectation.value), expected)
         pass
     pass
 register("__ne__", lambda self, expected: MatchNot(self.expectation)(expected))
@@ -42,9 +43,9 @@ register("not_be", property(lambda self: MatchNot(self.expectation)))
 
 class MatchInstance(MatchAction):
     def __call__(self, expected):
-        message = "it[%s] should not be instance of %s" % (
+        message = "it[%s] should be instance of %s"
+        assert isinstance(self.expectation.value, expected), message % (
             repr(self.expectation.value), repr(expected))
-        assert isinstance(self.expectation.value, expected), message
         pass
     pass
 register("be_instance_of", 
@@ -53,17 +54,18 @@ register("be_instance_of",
 
 class MatchExist(MatchAction):
     def __call__(self):
-        message = "it[%s] does not exist" % (self.expectation.value)
-        assert self.expectation.value is not None, message
+        message = "it[%s] does not exist"
+        assert self.expectation.value is not None, message % (
+            self.expectation.value)
         pass
     pass
 register("exist", property(lambda self: MatchExist(self.expectation)()))
 
 class MatchIn(MatchAction):
     def __call__(self, expected):
-        message = "it[%s] does not exist in %s" % (
+        message = "it[%s] does not exist in %s"
+        assert self.expectation.value in expected, message % (
             self.expectation.value, expected)
-        assert self.expectation.value in expected, message
         pass
     pass
 register("be_in", property(lambda self: MatchIn(self.expectation)))
@@ -86,29 +88,28 @@ class MatchEach(MatchAction):
             eindex = match.b + match.size
             pass
         
-        message = ""
-        message += "%s should not be in it" % lefts if lefts else ""
-        message += ", and " if lefts and not_founds else ""
-        message += "%s should be in it" % not_founds if not_founds else ""
-        
-        assert value != exp, message
+        assert len(lefts) != 0 or len(not_founds) != 0, "".join(
+            ["%s should not be in it" % lefts if lefts else "",
+             ", and " if lefts and not_founds else "",
+             "%s should be in it" % not_founds if not_founds else ""])
         pass
     pass
 register("be_each_of", property(lambda self: MatchEach(self.expectation)))
 
 class MatchTrue(MatchAction):
     def __call__(self):
-        message = "it[%s] should be True" % (self.expectation.value)
+        message = "it should be True"
         assert self.expectation.value, message
         pass
     pass
 register("be_true", property(lambda self: MatchTrue(self.expectation)()))
+register("be_ok", property(lambda self: MatchTrue(self.expectation)()))
 
 class MatchFalse(MatchAction):
     def __call__(self):
-        message = "it[%s] should be False" % (self.expectation.value)
+        message = "it should be False"
         assert not self.expectation.value, message
         pass
     pass
-register("be_false", property(lambda self: MatchTrue(self.expectation)()))
+register("be_false", property(lambda self: MatchFalse(self.expectation)()))
 
