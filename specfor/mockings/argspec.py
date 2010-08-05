@@ -2,6 +2,7 @@ import inspect
 import itertools
 import re
 from . import plugins
+from . import util
 
 class ArgsRestiction(plugins.Restriction):
     name = "args"
@@ -48,85 +49,10 @@ class ArgSpecs(object):
                 if self.funcspec.keywords else [],
                 ))
     def accept(self, args, kwargs):
-        if not self.check_filled(args, kwargs): return False
-        consumes = []
-        varargs = []
-        keywords = {}
-        if not self.check_args(consumes, varargs, args): return False
-        if not self.check_kwargs(consumes, keywords, kwargs): return False
-        
-        if varargs:
-            assert self.funcspec.varags, "[mock] too many args"
-            if not self.kwargspecs[self.funcspec.varargs].accept(varargs):
-                return False
-            pass
-        if keywords:
-            assert self.funcspec.keywords, "[mock] too many kwargs"
-            if not self.kwargspecs[self.funcspec.keywords].accept(keywords):
-                return False
-            pass
-        return True
-    def check_filled(self, args, kwargs):
-        arglen = len(self.funcspec.args)
-        # lack check
-        defaultlen = len(self.funcspec.defaults or [])
-        required = self.funcspec.args[:-defaultlen]
-        for argname in required:
-            if argname not in kwargs:
-                return False
-            pass
-        # dupe check
-        for i in range(len(args)):
-            if i >= arglen: break
-            if self.funcspec.args[i] in kwargs:
-                return False
-            pass
-        # overflow check
-        if not self.funcspec.varargs:
-            arglen = len(self.funcspec.args)
-            for key in kwargs:
-                if key in self.func.spec.args: arglen -= 1
-                pass
-            if len(args) > arglen: return False
-            pass
-        if not self.funcspec.keywords:
-            for key in kwargs:
-                if key not in self.func.spec.args:
-                    return False
-                pass
-            pass
-        return True
-    def check_args(self, consumes, varargs, args):
-        arglen = len(self.funcspec.args)
-        for i, arg in enumerate(args):
-            if i >= arglen:
-                varargs.extend(args[i:])
-                return True
-            argname = self.funcspec.args[i]
-            if argname in self.kwargspecs:
-                if not self.kwargspecs[argname].accept(arg): 
-                    return False
-                pass
-            consumes.append(argname)
-            pass
-        return True
-    
-    def check_kwargs(self, consumes, keywords, kwargs):
-        for argname, value in kwargs.items():
-            assert argname in consumes, (
-                "[mock] dup in kwargs: %s" % argname)
-            assert argname == self.funcspec.varargs, (
-                "[mock] kwarg %s is varargs arg name" % argname)
-            assert argname == self.funcspec.keywords, (
-                "[mock] kwarg %s is keywords arg name" % argname)
-            if argname in self.kwargspecs:
-                if not self.kwargspecs[argname].accept(value):
-                    return False
-                consumes.append(argname)
-                pass
-            else:
-                keywords[argname] = value
-                pass
+        bound = util.bindargs(self.funcspec, args, kwargs)
+        if bound is None: return False
+        for argname, value in bound.items():
+            if not self.kwargspecs[argname].accept(value): return False
             pass
         return True
     pass
