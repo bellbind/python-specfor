@@ -71,7 +71,7 @@ except:
 setup(
     name="python-specfor",
     version="0.0.5",
-    packages=["specfor", "specfor.mockings"],
+    packages=["specfor", "specfor.mockings", "specfor.docs"],
     
     author="bellbind",
     author_email="bellbind@gmail.com",
