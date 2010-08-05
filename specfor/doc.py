@@ -10,11 +10,14 @@ def main():
     parser.add_option(
         "-n", "--name", dest="name", default="simple",
         help="document generator name (default: %default)")
+    parser.add_option(
+        "-x", "--ext", dest="ext", default="md",
+        help="file ext (default: %default)")
     opts, modnames = parser.parse_args()
     
     for modname in modnames:
         module = __import__(modname, fromlist=["*"])
-        with open("%s%smd" % (modname, os.path.extsep), "w") as f:
+        with open("%s%s%s" % (modname, os.path.extsep, opts.ext), "w") as f:
             for line in plugins.convert(opts.name, opts, module):
                 f.write(line)
                 pass
