@@ -10,62 +10,66 @@ class SimpleMarkdown(plugins.DocumentGenerator):
         pass
     
     def convert_module(self, module):
-        header = "# %s\n\n" % module.name
-        lines = []
+        yield "# %s\n\n" % module.name
         for spec in module.specs:
-            lines.extend(self.convert_spec(spec))
+            for _ in self.convert_spec(spec): yield _
             pass
-        return [header] + lines + ["\n"]
+        yield "\n"
+        return
     
     def convert_spec(self, spec):
-        header = "## %s\n\n" % spec.name
-        lines = []
+        yield "## %s\n\n" % spec.name
         for behavior in spec.behaviors:
-            lines.extend(self.convert_behavior(spec, behavior))
+            for _ in self.convert_behavior(spec, behavior): yield _
             pass
-        for bundle_behavior in spec.bundle_behaviors:
-            ls = self.convert_bundle_behavior(spec, bundle_behavior)
-            lines.extend(ls)
+        for bbehavior in spec.bundle_behaviors:
+            for _ in self.convert_bundle_behavior(spec, bbehavior): yield _
             pass
-        return [header] + lines + ["\n"]
+        yield "\n"
+        return
     
     def convert_behavior(self, spec, behavior):
-        header = "### [%s] %s\n\n" % (spec.name, behavior.description)
-        lines = []
+        yield "### [%s] %s\n\n" % (spec.name, behavior.description)
         for prepare in spec.prepares:
-            lines.extend(self.convert_func(prepare))
+            for _ in self.convert_func(prepare): yield _
             pass
-        lines.extend(self.convert_func(behavior.definition))
+        for _ in self.convert_func(behavior.definition): yield _
         for cleanup in spec.cleanups:
-            lines.extend(self.convert_func(cleanup))
+            for _ in self.convert_func(cleanup): yield _
             pass
-        return [header] + lines + ["\n"]
+        yield "\n"
+        return
     
     def convert_bundle_behavior(self, spec, bundle_behavior):
         behavior = bundle_behavior.behavior
         bundle = bundle_behavior.bundle
         setup = bundle_behavior.setup
-        header = "### [%s] %s: %s\n\n" % (
+        yield "### [%s] %s: %s\n\n" % (
             spec.name, bundle.name, behavior.description)
-        lines = []
         for prepare in spec.prepares:
-            lines.extend(self.convert_func(prepare))
+            for _ in self.convert_func(prepare): yield _
             pass
-        if setup: lines.extend(self.convert_func(setup))
+        if setup: 
+            for _ in self.convert_func(setup): yield _
+            pass
         for prepare in bundle.prepares:
-            lines.extend(self.convert_func(prepare))
+            for _ in self.convert_func(prepare): yield _
             pass
-        lines.extend(self.convert_func(behavior.definition))
+        for _ in self.convert_func(behavior.definition): yield _
         for cleanup in bundle.cleanups:
-            lines.extend(self.convert_func(cleanup))
+            for _ in self.convert_func(cleanup): yield _
             pass
         for cleanup in spec.cleanups:
-            lines.extend(self.convert_func(cleanup))
+            for _ in self.convert_func(cleanup): yield _
             pass
-        return [header] + lines + ["\n"]
+        yield "\n"
+        return
     
     def convert_func(self, func):
-        return ["<pre>\n", func.source, "</pre>\n"]
+        yield "<pre>\n"
+        yield func.source
+        yield "</pre>\n"
+        return
     
     pass
 plugins.register("simple", SimpleMarkdown)
