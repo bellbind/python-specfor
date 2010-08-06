@@ -1,20 +1,23 @@
-import optparse
+from __future__ import with_statement
 import os
-from .docs import simple
-from .docs import plugins
-
 
 def main():
-    parser = optparse.OptionParser(
-        usage="%prog [opts] module.name ...",
-        description="Generate documents from specfor spec defined modules.")
-    parser.add_option(
+    from specfor import version 
+    from specfor.compat import arg_parser
+    from specfor.docs import simple
+    from specfor.docs import plugins
+    
+    parser = arg_parser(
+        "module.name",
+        description="Generate documents from specfor spec defined modules.",
+        version=version)
+    parser.add(
         "-n", "--name", dest="name", default="simple",
-        help="document generator name (default: %default)")
-    parser.add_option(
+        help="document generator name (default: simple)")
+    parser.add(
         "-x", "--ext", dest="ext", default="md",
-        help="generated file ext (default: %default)")
-    opts, modnames = parser.parse_args()
+        help="generated file ext (default: md)")
+    opts, modnames = parser.parse()
     
     for modname in modnames:
         module = __import__(modname, fromlist=["*"])

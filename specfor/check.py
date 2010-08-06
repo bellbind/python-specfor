@@ -60,18 +60,21 @@ class SpecRunner(object):
     pass
 
 def main():
-    import optparse
-    parser = optparse.OptionParser(
-        usage="%prog [opts] files ...",
-        description="run spec as unittest")
-    parser.add_option(
+    from specfor import version
+    from specfor.compat import arg_parser
+    
+    parser = arg_parser(
+        "spec.py", 
+        description="run spec as unittest",
+        version=version)
+    parser.add(
         "-q", "--quite", action="store_const", const=0, dest="verbosity", 
         default=1)
-    parser.add_option(
+    parser.add(
         "-v", "--verbose", action="store_const", const=2, dest="verbosity", 
         default=1)
     
-    opts, files = parser.parse_args()
+    opts, files = parser.parse()
     runner = unittest.TextTestRunner(verbosity=opts.verbosity)
     result = SpecRunner(runner).run(files)
     if not result.wasSuccessful(): sys.exit(1)
