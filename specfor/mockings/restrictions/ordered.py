@@ -5,14 +5,13 @@ class OrderedRestriction(plugins.Restriction):
     def __init__(self, context):
         self.context = context
         self.passed = False
-        self.context.append(self)
         pass
     def called(self, responsibilities, returns, args, kwargs):
-        for rest in self.context:
-            if rest == self: break
-            assert rest.passed, (
-                "called invalid order: %s" % repr(responsibilities))
-            pass
+        target = args[0]
+        check = (not hasattr(target, "_ordered") or 
+                 target._ordered + 1 == self.context)
+        assert check, ("called invalid order: %s" % repr(responsibilities))
+        target._ordered = self.context
         self.passed = True
         return True
     def completed(self, responsibilities):
@@ -23,4 +22,4 @@ class OrderedRestriction(plugins.Restriction):
 
     pass
 plugins.register(
-    "ordered", lambda resp, context: OrderedRestiction(context))
+    "ordered", lambda resp, context: OrderedRestriction(context))
