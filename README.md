@@ -69,6 +69,10 @@ It is also compatible with "nose". so it can run by `nosetests`:
 
 [GNU Lesser General Public License](http://www.gnu.org/copyleft/lesser.html)
 
+## Authors
+
+- [@bellbind](http://twitter.com/bellbind)
+
 ## Resources
 
 - [PyPI python-specfor](http://pypi.python.org/pypi/python-specfor)
