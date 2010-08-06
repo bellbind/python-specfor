@@ -1,4 +1,5 @@
 include README.md
-graft debian
 include examples/*.py
 include specs/*.py
+graft doc
+graft debian

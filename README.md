@@ -14,6 +14,11 @@ A Framework for Behavior Driven Development(BDD) based on stdlib's unittest
 - Decorator based "Mock" object definition
 - All features can be used independently: e.g. use spec with `nose.tools`
 - Markdown document generator from spec file
+- Single code implementation for multi python versions (2.5-2.7, 3.1)
+
+## Requires
+
+- Python (tested on 2.5, 2.6, 2.7, 3.1)
 
 ## Install
 
@@ -64,6 +69,16 @@ At Python 2.7, "Spec" can run by `python -m unittest` runner command:
 It is also compatible with "nose". so it can run by `nosetests`:
 
     nosetests examples/sum_spec.py
+
+## Command-line utilities
+
+`specfor.check`: launch `unittest.TextTestRunner` as same style for any python version.
+
+    python -m specfor.check spec/*.py
+
+`specfor.doc`: generate markdown files from spec.py
+
+    python -m specfor.doc -d doc spec/*.py
 
 ## License
 

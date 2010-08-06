@@ -14,6 +14,7 @@ Features
 - Decorator based "Mock" object definition
 - All features can be used independently: e.g. use spec with ``nose.tools``
 - Markdown document generator from spec file
+- Single code implementation for multi python version (2.5-2.7, 3.1)
 
 
 Spec Example
@@ -72,7 +73,7 @@ except:
 
 setup(
     name="python-specfor",
-    version="0.0.6",
+    version="0.1.0",
     packages=["specfor", "specfor.mockings", "specfor.mockings.restrictions", 
               "specfor.docs"],
     
