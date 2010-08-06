@@ -72,7 +72,4 @@ def behavior(its):
     pass
 
 
-# TODO: count restriction
-# TODO: ordered restriction
-
 spec.publish(globals())
