@@ -1,0 +1,6 @@
+python-specfor for Debian
+------------------------------
+
+A Framework for Behavior Driven Development(BDD) based on stdlib's unittest 
+
+ -- bellbind <bellbind@gmail.com>  Sat, 17 Jul 2010 18:22:50 +0900

@@ -1,0 +1,35 @@
+Source: python-specfor
+Section: python
+Priority: extra
+Maintainer: ichiyama ryoichi <bellbind@gmail.com>
+Build-Depends: cdbs, debhelper (>= 7),  python-support, 
+ python2.6-dev, python3.1-dev, python-setuptools, python3-setuptools, 
+Standards-Version: 3.8.4
+XS-Python-Version: 2.6, 3.1
+Homepage: http://github.com/bellbind/python-specfor
+
+Package: python-specfor
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python
+Description: A Framework for Behavior Driven Development(BDD) 
+ specfor is based on stdlib's unittest
+ . 
+     - Python decorator based Spec definition
+     - "Spec" definition is compatible with unittest.TestCase
+     - Spec files can execute with unittest or nosetests
+     - RSpec like Expectation (e.g. the[xxx].should.be[yyy])
+     - Decorator based "Mock" object definition
+ .
+
+Package: python3-specfor
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, python3
+Description: A Framework for Behavior Driven Development(BDD) 
+ specfor is based on stdlib's unittest
+ . 
+     - Python decorator based Spec definition
+     - "Spec" definition is compatible with unittest.TestCase
+     - Spec files can execute with unittest or nosetests
+     - RSpec like Expectation (e.g. the[xxx].should.be[yyy])
+     - Decorator based "Mock" object definition
+ .
