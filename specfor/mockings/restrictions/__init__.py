@@ -1,4 +1,4 @@
-from . import argspec
-from . import callspec
-from . import orderedspec
+from . import args
+from . import call
+from . import ordered
 
