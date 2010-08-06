@@ -1,20 +1,8 @@
 
 class funcspec(object):
     def __init__(self, argspec):
-        self.argspec = argspec
+        self.args, self.varargs, self.keywords, self.defaults = argspec 
         pass
-    @property
-    def args(self):
-        return self.argspec[0]
-    @property
-    def varargs(self):
-        return self.argspec[1]
-    @property
-    def keywords(self):
-        return self.argspec[2]
-    @property
-    def defaults(self):
-        return self.argspec[3]
     pass
     
 def getargspec(func):
