@@ -6,7 +6,7 @@ import os
 import sys
 import unittest
 
-class SpecRunner(object):
+class SpecChecker(object):
     def __init__(self, runner=None, loader=None):
         self.runner = runner or unittest.TextTestRunner()
         self.loader = loader or unittest.TestLoader()
@@ -16,7 +16,8 @@ class SpecRunner(object):
         sysmods = sys.modules.copy()
         try:
             mods = self.load_mods(files)
-            result = self.invoke_runner(mods)
+            suite = self.as_suite(mods)
+            result = self.invoke_runner(suite)
             return result
         finally:
             sys.modules = sysmods
@@ -37,12 +38,15 @@ class SpecRunner(object):
             pass
         return mods
     
-    def invoke_runner(self, mods):
+    def as_suite(self, mods):
         suite = unittest.TestSuite()
         for mod in mods:
             test = self.loader.loadTestsFromModule(mod)
             suite.addTest(test)
             pass
+        return suite
+    
+    def invoke_runner(self, suite):
         return self.runner.run(suite)
     
     def f2m(self, filename):
@@ -76,7 +80,7 @@ def main():
     
     opts, files = parser.parse()
     runner = unittest.TextTestRunner(verbosity=opts.verbosity)
-    result = SpecRunner(runner).run(files)
+    result = SpecChecker(runner).run(files)
     if not result.wasSuccessful(): sys.exit(1)
     pass
 
