@@ -54,6 +54,8 @@ For install/update, use `easy_install` command:
 
 For more examples, see: 
 [examples/*.py](http://github.com/bellbind/python-specfor/tree/master/examples/)
+ or 
+[specs/*.py](http://github.com/bellbind/python-specfor/tree/master/specs/)
 
 ## Usage
 
