@@ -6,10 +6,8 @@ from .docs import plugins
 
 def main():
     parser = optparse.OptionParser(
-        usage="\n".join(
-            ["%prog [opts] module.name ...",
-             "",
-             "Generate documents from specfor spec defined modules."]))
+        usage="%prog [opts] module.name ...",
+        description="Generate documents from specfor spec defined modules.")
     parser.add_option(
         "-n", "--name", dest="name", default="simple",
         help="document generator name (default: %default)")
