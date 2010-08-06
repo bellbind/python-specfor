@@ -1,4 +1,4 @@
-from . import plugins
+from .. import plugins
 
 class OrderedRestriction(plugins.Restriction):
     name = "ordered"

@@ -63,15 +63,18 @@ Topic :: Software Development :: Testing
 
 try:
     from setuptools import setup
+    options = {}
     pass
 except:
     from distutils.core import setup
+    options = {}
     pass
 
 setup(
     name="python-specfor",
     version="0.0.5",
-    packages=["specfor", "specfor.mockings", "specfor.docs"],
+    packages=["specfor", "specfor.mockings", "specfor.mockings.restrictions", 
+              "specfor.docs"],
     
     author="bellbind",
     author_email="bellbind@gmail.com",
@@ -81,4 +84,5 @@ setup(
     description=doclines[0],
     long_description="\n".join(doclines[2:]),
     classifiers=[ln for ln in classifiers.split("\n") if ln],
+    **options
     )

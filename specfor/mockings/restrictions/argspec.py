@@ -1,8 +1,8 @@
 import inspect
 import itertools
 import re
-from . import plugins
-from . import util
+from .. import plugins
+from .. import util
 
 class ArgsRestiction(plugins.Restriction):
     name = "args"
