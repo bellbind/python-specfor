@@ -53,19 +53,21 @@ class Responsibility(object):
         method.responsibilities.append(self)
         pass
     def responds(self, *args, **kwargs):
-        for restrictions in self.restrictions:
-            if not restrictions.prepare(self, args, kwargs): return False
+        for restriction in self.restrictions:
+            if not restriction.prepare(self, args, kwargs): return False
             pass
         return True
     def returns(self, *args, **kwargs):
         ret = self.result(*args, **kwargs)
-        for restrictions in self.restrictions:
-            if not restrictions.called(self, ret, args, kwargs): return False
+        for restriction in self.restrictions:
+            check = restriction.called(self, ret, args, kwargs)
+            assert check, "%s was failed: args=%s kwargs=%s" % (
+                repr(restriction), repr(args), repr(kwargs))
             pass
         return ret
     def check_complete(self):
-        for restrictions in self.restrictions:
-            restrictions.completed(self)
+        for restriction in self.restrictions:
+            restriction.completed(self)
             pass
         return
     def __repr__(self):

@@ -4,11 +4,11 @@ class Restriction(object):
     name = "nop"
     def __repr__(self):
         return "[]"
-    def precalled(self, responsibilities, *args, **kwargs):
+    def prepare(self, responsibilities, *args, **kwargs):
         """called before method calling
         """
         return True
-    def postcalled(self, responsibilities, returns, *args, **kwargs):
+    def called(self, responsibilities, returns, *args, **kwargs):
         """called after method calling
         """
         return True
