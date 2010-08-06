@@ -3,6 +3,7 @@
 # generate md doc: python -m specfor.doc examples.first
 
 # import
+from __future__ import with_statement
 from specfor import the, spec
 
 

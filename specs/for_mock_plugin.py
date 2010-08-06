@@ -1,3 +1,4 @@
+from __future__ import with_statement
 from specfor import spec, the
 
 spec_mock_plugin = spec.of("mock plugin")

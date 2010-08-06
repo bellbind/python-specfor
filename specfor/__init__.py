@@ -1,7 +1,8 @@
 version = "0.0.6"
-from .framework import *
-from .expectation import *
-from .mockings import *
+
+from .framework import spec
+from .expectation import the
+from .mockings import mock
 
 def new_specfor():
     import sys

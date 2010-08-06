@@ -1,3 +1,4 @@
+from __future__ import with_statement
 from specfor import the, spec
 
 ordered_mock_spec = spec.of("mock with ordered call")

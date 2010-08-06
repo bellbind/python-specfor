@@ -118,11 +118,12 @@ class MatchSame(MatchAction):
         eindex = 0
         lefts = []
         not_founds = []
-        for match in matches:
-            lefts.extend(value[vindex:match.a])
-            not_founds.extend(exp[eindex:match.b])
-            vindex = match.a + match.size
-            eindex = match.b + match.size
+        
+        for a, b, size in matches:
+            lefts.extend(value[vindex:a])
+            not_founds.extend(exp[eindex:b])
+            vindex = a + size
+            eindex = b + size
             pass
         
         assert not lefts and not not_founds, "".join(

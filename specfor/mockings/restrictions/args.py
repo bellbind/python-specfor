@@ -113,21 +113,21 @@ class ArgSpecLike(object):
 
 def just_factory(resp, kwargs):
     kwspecs = dict((k, ArgSpecJust(k, v)) for k, v in kwargs.items())
-    funcspec = inspect.getargspec(resp.result)
+    funcspec = util.getargspec(resp.result)
     argspec = ArgSpecs(kwspecs, funcspec)
     return ArgsRestiction(argspec)
 plugins.register("just", just_factory)
 
 def like_factory(resp, kwargs):
     kwspecs = dict((k, ArgSpecLike(k, v)) for k, v in kwargs.items())
-    funcspec = inspect.getargspec(resp.result)
+    funcspec = util.getargspec(resp.result)
     argspec = ArgSpecs(kwspecs, funcspec)
     return ArgsRestiction(argspec)
 plugins.register("like", like_factory)
 
 def unless_factory(resp, kwargs):
     kwspecs = dict((k, ArgSpecNot(k, v)) for k, v in kwargs.items())
-    funcspec = inspect.getargspec(resp.result)
+    funcspec = util.getargspec(resp.result)
     argspec = ArgSpecs(kwspecs, funcspec)
     return ArgsRestiction(argspec)
 plugins.register("unless", unless_factory)
