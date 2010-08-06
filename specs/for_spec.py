@@ -11,7 +11,7 @@ def behavior(its):
         log.append("done")
         pass
     
-    test, r = run_as_test(a_spec)
+    test, r = run_as(a_spec)
     assert log[0] == "done"
     assert r.wasSuccessful()
     pass
@@ -26,7 +26,7 @@ def behavior(its):
         pass
     
     # check as unittest.TestCase
-    test, r = run_as_test(a_spec)
+    test, r = run_as(a_spec)
     assert not r.wasSuccessful()
     pass
 
@@ -45,7 +45,7 @@ def behavior(its):
         pass
     
     # check as unittest.TestCase
-    test, r = run_as_test(a_spec)
+    test, r = run_as(a_spec)
     assert len(log) == 2
     assert log[0] == "prepare"
     assert log[1] == "behavior"
@@ -66,7 +66,7 @@ def behavior(its):
         pass
     
     # check as unittest.TestCase
-    test, r = run_as_test(a_spec)
+    test, r = run_as(a_spec)
     assert len(log) == 2
     assert log[0] == "behavior"
     assert log[1] == "after"
@@ -87,7 +87,7 @@ def behavior(its):
         pass
     
     # check as unittest.TestCase
-    test, r = run_as_test(a_spec)
+    test, r = run_as(a_spec)
     assert len(log) == 1
     assert log[0] == "after"
     pass
@@ -119,7 +119,7 @@ def behavior(its):
         pass
     
     # check as unittest.TestCase
-    test, r = run_as_test(a_spec)
+    test, r = run_as(a_spec)
     assert len(log) == 5
     assert log[0] == "before1"
     assert log[1] == "before2"
@@ -145,8 +145,8 @@ def behavior(its):
         pass
     
     # check as unittest.TestCase
-    a_test, r = run_as_test(a_spec)
-    b_test, r = run_as_test(b_spec)
+    a_test, r = run_as(a_spec)
+    b_test, r = run_as(b_spec)
     assert a_test.value == "done A"
     assert b_test.value == "done B"
     pass
@@ -166,7 +166,7 @@ def behavior(its):
         it.name = "a spec"
         pass
     
-    test, r = run_as_test(a_spec)
+    test, r = run_as(a_spec)
     assert test.value == "a spec done"
     pass
 
@@ -202,7 +202,7 @@ def behavior(its):
         log.append("glue")
         pass
     
-    test, r = run_as_test(a_spec)
+    test, r = run_as(a_spec)
     assert len(log) == 6
     assert log[0] == "spec before"
     assert log[1] == "glue"
@@ -213,7 +213,7 @@ def behavior(its):
     pass
 
 # helper
-def run_as_test(spec, r=None):
+def run_as(spec, r=None):
     import unittest
     r = r or unittest.TestResult()
     names = [n for n in dir(spec) if n.startswith("test")]

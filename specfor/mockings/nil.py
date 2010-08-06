@@ -3,32 +3,43 @@ class NilClass(object):
     def __repr__(self):
         return "nil"
     
+    # seq
     def __len__(self):
         return 0
     def __iter__(self):
         return;yield
     
-    def __cmp__(self, other):
-        return cmp(None, other)
-    __lt__ = __le__ = lambda self, other: True
-    __gt__ = __ge__ = lambda self, other: False
+    # compare
+    def __eq__(self, other): return id(self) == id(other)
+    def __ne__(self, other): return id(self) != id(other)
+    def __cmp__(self, other): return cmp(None, other)
+    def __lt__(self, other): return True
+    def __le__ (self, other): return True
+    def __gt__(self, other): return False
+    def __ge__(self, other): return False
     
     # cast
-    __nonzero__ = __bool__ = lambda self: False
-    __int__ = lambda self: 0
-    __long__ = lambda self: long(0)
-    __float__ = lambda self: float(0)
-    __complex__ = lambda self: complex(0)
-    __oct__ = lambda self: oct(0)
-    __hex__ = lambda self: hex(0)
+    def __nonzero__(self): return False
+    def __bool__(self): return False
+    def __int__(self): return 0
+    def __long__(self): return long(0)
+    def __float__(self): return float(0)
+    def __complex__(self): return complex(0)
+    def __oct__(self): return oct(0)
+    def __hex__(self): return hex(0)
     
+    # access
+    def __delattr__(self, k): return nil
+    def __getattr__(self, k): return nil
+    def __setattr__(self, k, v): return nil
+    def __delitem__(self, k): return nil
+    def __getitem__(self, k): return nil
+    def __setitem__(self, k, v): return nil
+    def __call__(self, *args, **kwargs): return nil
+
     # arith
     __divmod__ = __rdivmod__ = __coerce__ = lambda self, other: (nil, nil)
-    
-    __call__ = \
-        __delattr__ = __getattr__ = __setattr__ = \
-        __delitem__ = __getitem__ = __setitem__ = \
-        __and__ = __or__ = __xor__ = __lshift__ = __rshift__ = \
+    __and__ = __or__ = __xor__ = __lshift__ = __rshift__ = \
         __add__ = __sub__ = __mul__ = \
         __div__ = __truediv__ = __floordiv__ = \
         __mod__ = __pow__ = \
@@ -45,3 +56,4 @@ class NilClass(object):
     
     pass
 nil = NilClass()
+__all__ = ["nil"]
