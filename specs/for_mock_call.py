@@ -1,3 +1,4 @@
+from __future__ import with_statement
 from specfor import the, spec
 
 count_mock_spec = spec.of("mock with count call")
@@ -84,6 +85,5 @@ def behavior(its):
     counter.count()
     with the.raising[AssertionError]: mock.check(counter)
     pass
-
 
 spec.publish(globals())
