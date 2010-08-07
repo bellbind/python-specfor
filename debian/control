@@ -9,7 +9,7 @@ XS-Python-Version: 2.6, 3.1
 Homepage: http://github.com/bellbind/python-specfor
 
 Package: python-specfor
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, python
 Description: A Framework for Behavior Driven Development(BDD) 
  specfor is based on stdlib's unittest
@@ -22,7 +22,7 @@ Description: A Framework for Behavior Driven Development(BDD)
  .
 
 Package: python3-specfor
-Architecture: any
+Architecture: all
 Depends: ${shlibs:Depends}, ${misc:Depends}, python3
 Description: A Framework for Behavior Driven Development(BDD) 
  specfor is based on stdlib's unittest
